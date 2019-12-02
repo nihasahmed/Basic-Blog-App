@@ -93,12 +93,14 @@
 
 </div>
   <div class="col-sm-4 mx-auto ">
+    {% if logged %}
     <div class="card col-sm-12  shadow-sm ">
       <div class="card-body ">
         <h6 class="card-text font-weight-bold">Notifications</h6>
         <p id="notifications">You are all caught up!</p>
       </div>
     </div>
+    {% endif %}
     <div class="card col-sm-12  shadow-sm ">
       <div class="card-body ">
         <h6 class="card-text font-weight-bold">Latest blog posts from Inapp</h6>
