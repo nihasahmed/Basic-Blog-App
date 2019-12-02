@@ -1,0 +1,146 @@
+
+<!doctype html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Jekyll v3.8.5">
+  <title>Home</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
+  <link href="{% static 'css/blog.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+  <style>
+
+    </style>
+  <!-- Custom styles for this template -->
+
+</head>
+<body>
+<header class="">
+  <nav class="navbar navbar-expand-md navbar-dark   fixed-top" style="background-color: #001c18;">
+  <a class="navbar-brand" href="">Home</a>
+  {% if logged %}
+    <a class="navbar-brand" href="{% url 'createpost' %}">Create Post</a>
+    {% endif %}
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav ml-auto">
+      {% if logged %}
+      <li class="nav-item active">
+        <a class="nav-link " href="{% url 'logout' %}">Logout</a>
+      </li>
+      {% else %}
+      <li class="nav-item active">
+        <a class="nav-link " href="{% url 'signup' %}">Sign up</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link " href="{% url 'login' %}">Login</a>
+      </li>
+      {% endif %}
+    </ul>
+
+  </div>
+</nav>
+
+</header>
+<div class="container bg-transparent jumbotron ">
+  <h1 class="display-4 text-center pt-3" style="font-family:'Permanent Marker', cursive;color:#001c18;">Welcome to blog </h1>
+<div class="row">
+<div class="col-sm-8 mx-auto ">
+  {% if content %}
+    {% for contents in content %}
+    <!-- <div class="col-sm-6 col-sm-offset-3"> -->
+    <div class="row py-3 r ">
+      <div class="card col-sm-12  shadow-sm {% if contents.approved %} approved {% else %} unapproved {% endif %}">
+        {% if contents.pic %}
+          <img class="bd-placeholder-img card-img-top img-fluid mx-auto d-block pt-2"  style = "max-height:225px;max-width:225px;width: auto;height: auto;" src = '{{contents.pic.url}}' >
+        {% else %}
+          <img class="bd-placeholder-img card-img-top img-fluid mx-auto d-block pt-2"  style = "max-height:225px;max-width:225px;width: auto;height: auto;" src = "{% static 'image/index.png' %}" >
+        {% endif %}
+
+        <div class="card-body ">
+          <h4 class="card-text">{{contents.title}}<span class="text-muted lead">  {{ contents.postdate|timesince }} ago</span></h4>
+          <p>{{contents.content|truncatechars:120}}</p>
+          <a href="posts/{{contents.id}}" role="button" class="btn btn-info btn-block my-2">View Post</a>
+          {% if contents.user_id.id == id %}
+           <a href="edit/{{contents.id}}" role="button" class="btn btn-info btn-block my-2">Edit Post</a>
+          {% endif %}
+          {% if super %}
+          <form method="post" >
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ contents.id }}">
+             <button type="submit"  role="button" class="btn btn-{% if contents.approved %}danger{% else %}success{% endif %} btn-block my-2">{% if contents.approved %} Hold {% else %} Approve {% endif %}</button>
+          </form>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-center">Sorry its empty here !</p>
+  {% endif %}
+
+</div>
+  <div class="col-sm-4 mx-auto ">
+    <div class="card col-sm-12  shadow-sm ">
+      <div class="card-body ">
+        <h6 class="card-text font-weight-bold">Notifications</h6>
+        <p id="notifications">You are all caught up!</p>
+      </div>
+    </div>
+    <div class="card col-sm-12  shadow-sm ">
+      <div class="card-body ">
+        <h6 class="card-text font-weight-bold">Latest blog posts from Inapp</h6>
+        {% if inapp %}
+          {% for item in inapp %}
+            <a href="{{ item.link }}">{{ item.title }}</a><hr>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<footer class=" footer   text-muted ">
+  <div class="container">
+    <p class="float-right">
+      <a href="#">Back to top</a>
+    </p>
+    <p class="text-center">Blog  &copy; 2019</p>
+
+  </div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script>
+		var chatSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/notification/');
+
+    chatSocket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        if (data.event == 'like'){
+          textdata = '<i class="fa fa-thumbs-o-up" aria-hidden="true"></i> User '+data.user+' liked the your post "'+data.title+'"';
+        }
+        console.log(textdata);
+        document.getElementById('notifications').innerHTML = textdata;
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('notification socket closed unexpectedly');
+    };
+</script>
+</body>
+</html>

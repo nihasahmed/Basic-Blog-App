@@ -1,0 +1,20 @@
+.approved{
+
+    background-color: rgba(79, 188, 6, 0.10)
+
+}
+.unapproved{
+
+    background-color: rgba(188, 6, 6, 0.10)
+
+}
+.bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+      }
+
+@media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
